@@ -1,64 +1,24 @@
 
-// THIS IS BASICALALLY WHAT HAPPENS WHEN YOU MAKE A CONSTRUCTOR
-// HOWEVER THE BELOW WAY IS THE NORMAL WAY
-var createMatch = function(player1Name,player2Name,result){ 
-	return {player1Name:player1Name, player2Name:player2Name, result:result}
+var RatedPlayer = function(id,rating){
+	this.rating = rating;
+	this.id = id;
 };
 
-// NORMAL WAY
-var Match = function(player1Name,player2Name,result){ 
-	// creates a new object
-	// this = new object
-	this.player1Name = player1Name;
-	this.player2Name = player2Name;
-	this.result = result;
-	// returns this
-	// acts equivalently as first example.
-	this.winner = function(){
-		return this.result > 0.5 ? this.player2Name : this.player1Name;
-	} // this may be a good idea in terms of data hiding but dont worry now.
+RatedPlayer.prototype.updateRating = function(newRating){
+	this.rating = newRating;
 };
 
-// IN MOST CASES, IT IS BETTER TO MAKE THE METHODS OF THE OBJECT OUTSIDE IN THE FOLLOWING WAY USING PROTOTYPE
-// THAT WAY EACHOBJECT INSTANCE REFERS TO THE SAME METHODS RATHER THAN MAKING NEW ONES
-Match.prototype = {
-	toString: function(){
-		return "Hi";
-	}
-
-
+var Match = function(player1,player2,result){
+	ratingsAfterMatch = newRatings(player1.rating,player2.rating,1);
+	player1.updateRating(ratingsAfterMatch.player1);
+	player2.updateRating(ratingsAfterMatch.player2);
 };
 
-
-var matches = [];
-//matches.push(createMatch("rishi","mary",0));
-matches.push(new Match("tom","allison",0));
-
-console.log(matches[0].winner());
-console.log(matches[0].toString());
-
-var tournamentFunctions = {
-	getPlayers: function(matches){
-		var players = [];
-		matches.forEach(function(match){
-			if (!contains(players, match.player1Name)) {
-				players.push(match.player1Name);
-			}
-			if (!contains(players, match.player2Name)) {
-				players.push(match.player2Name);
-			}
-		});
-		return players;
-	},
-	rankPlayers: function(matches){
-		var players = this.getPlayers(matches);
-	}
-};
-
-
-function newRatings(player1Rating,player2Rating,kValue,result,shouldRound) {
-	var shouldRound=False
-	var kValue=32;
+function newRatings(player1Rating,player2Rating,result,kValue,shouldRound) {
+	// DO THE FOLLOWING STATEMENTS NEED A 'var' before kValue and shouldRound?
+	if (!kValue) kValue = 32;
+	if (!shouldRound) shouldRound = true;
+	
 	// Assign actual results to players.
 	var player1Result = result;
 	var player2Result = 1 - result;
@@ -68,40 +28,46 @@ function newRatings(player1Rating,player2Rating,kValue,result,shouldRound) {
 	var player2Expectation = 1 / (1+Math.pow(10,((player1Rating - player2Rating)/400)));
 
 	// Calculate new rating
-	var player1NewRating = player1Rating + (kValue*(player1Result - player1Expeectation));
-	var player2NewRating = player2Rating + (kValue*(player2Result - player2Expeectation));
+	var player1NewRating = player1Rating + (kValue*(player1Result - player1Expectation));
+	var player2NewRating = player2Rating + (kValue*(player2Result - player2Expectation));
 
 	// Handle Optional Rounding
 	if (shouldRound) {
-		player1NewRating = round(player1NewRating);
-		player2NewRating = round(player2NewRating);	
+		player1NewRating = Math.round(player1NewRating);
+		player2NewRating = Math.round(player2NewRating);	
 	}
 
-	// Create and return object
+	// Create and return new scores object
 	var newScores = {'player1':player1NewRating,'player2':player2NewRating}; 
 	return newScores
-}
-
-new Match("tom","allison",1);
-console.log(matches);
-
-//new Player("Rishi", 1800);
-
-/*
-console.log(fn1);
-console.log(fn2);
-
-var fn1 = function(){};
-function fn2(){};
-
-console.log(fn1);
-console.log(fn2);
-*/
+};
 
 
+// OBJECT ORIENTED EXAMPLE:
+var tom = new RatedPlayer("Tom", 1600);
+var alan = new RatedPlayer("Alan", 2000);
+console.log("toms rating: " + tom.rating);
+console.log("alans rating: " + alan.rating);
+
+new Match(tom,alan,1);
+console.log("tom and alan play a match, tom wins.")
+
+console.log("toms new rating: " + tom.rating);
+console.log("alans new rating: " + alan.rating);
+console.log("")
 
 
+// PROCEDURAL EXAMPLE:
+var tomRating = 1600;
+var alanRating = 2000;
+console.log("toms rating: " + tomRating);
+console.log("alans rating: " + alanRating);
 
-// newRatings(1600,1600,30,1)
-console.log("Hello!")
-console.log(Match.prototype);
+var scoresAfterMatch = newRatings(1600,2000,1);
+console.log("tom and alan play a match, tom wins.")
+
+var tomRating = scoresAfterMatch.player1;
+var alanRating = scoresAfterMatch.player2;
+console.log("toms new rating: " + tomRating);
+console.log("alans new rating: " + alanRating);
+
