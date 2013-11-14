@@ -63,7 +63,7 @@ var alanRating = 2000;
 console.log("toms rating: " + tomRating);
 console.log("alans rating: " + alanRating);
 
-var scoresAfterMatch = newRatings(1600,2000,1);
+var scoresAfterMatch = newRatings(tomRating,alanRating,1);
 console.log("tom and alan play a match, tom wins.")
 
 var tomRating = scoresAfterMatch.player1;
