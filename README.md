@@ -49,5 +49,4 @@ var tomRating = scoresAfterMatch.player1;
 var alanRating = scoresAfterMatch.player2;
 console.log("toms new rating: " + tomRating);
 console.log("alans new rating: " + alanRating);
-
-```javascript
+```
