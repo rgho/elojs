@@ -41,33 +41,3 @@ function newRatings(player1Rating,player2Rating,result,kValue,shouldRound) {
 	var newScores = {'player1':player1NewRating,'player2':player2NewRating}; 
 	return newScores
 };
-
-
-// OBJECT ORIENTED EXAMPLE:
-var tom = new RatedPlayer("Tom", 1600);
-var alan = new RatedPlayer("Alan", 2000);
-console.log("toms rating: " + tom.rating);
-console.log("alans rating: " + alan.rating);
-
-new Match(tom,alan,1);
-console.log("tom and alan play a match, tom wins.")
-
-console.log("toms new rating: " + tom.rating);
-console.log("alans new rating: " + alan.rating);
-console.log("")
-
-
-// PROCEDURAL EXAMPLE:
-var tomRating = 1600;
-var alanRating = 2000;
-console.log("toms rating: " + tomRating);
-console.log("alans rating: " + alanRating);
-
-var scoresAfterMatch = newRatings(tomRating,alanRating,1);
-console.log("tom and alan play a match, tom wins.")
-
-var tomRating = scoresAfterMatch.player1;
-var alanRating = scoresAfterMatch.player2;
-console.log("toms new rating: " + tomRating);
-console.log("alans new rating: " + alanRating);
-
